@@ -192,7 +192,7 @@ export default {
       // 非位置音频对象
       audio = new THREE.Audio(listener);
       // 音频资源路径
-      let audioUrl = new URL("@/assets/music/Just_Run.mp3", import.meta.url).href;
+      let audioUrl = new URL("@/assets/music/abc.mp4", import.meta.url).href;
       // 音频加载器
       let audioLoader = new THREE.AudioLoader();
       audioLoader.load(audioUrl, (AudioBuffer) => {
