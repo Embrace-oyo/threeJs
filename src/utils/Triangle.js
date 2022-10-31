@@ -57,7 +57,25 @@ export class Triangle {
     this.lineMaterial = new THREE.LineBasicMaterial().copy(lineMaterial);
     this.lineMaterial.transparent = true;
 
-    const vertices = new Float64Array([
+
+    /*const vertices = [
+      new THREE.Vector3(
+        randomRange(size, size / 2),
+        randomRange(size, size / 2),
+        randomRange(size, size / 2)
+      ),
+      new THREE.Vector3(
+        randomRange(size, size / 2) * -1,
+        randomRange(size, size / 2),
+        randomRange(size, size / 2) - 1
+      ),
+      new THREE.Vector3(
+        randomRange(size, size / 2) * -1,
+        randomRange(size, size / 2) * -1,
+        randomRange(size, size / 2) - 1
+      )
+    ];*/
+    const verticesPane = new Float32Array([
       randomRange(size, size / 2),
       randomRange(size, size / 2),
       randomRange(size, size / 2),
@@ -68,14 +86,28 @@ export class Triangle {
       randomRange(size, size / 2) * -1,
       randomRange(size, size / 2) - 1
     ]);
+    const verticesLine = new Float32Array([
+      randomRange(size, size / 2),
+      randomRange(size, size / 2),
+      randomRange(size, size / 2),
+      randomRange(size, size / 2) * -1,
+      randomRange(size, size / 2),
+      randomRange(size, size / 2) - 1
+    ]);
+
+    /* const panelGeometry = new THREE.Geometry();
+     const lineGeometry = new THREE.Geometry();*/
+
     const panelGeometry = new THREE.BufferGeometry();
     const lineGeometry = new THREE.BufferGeometry();
 
-    panelGeometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
-    lineGeometry.setAttribute("position", new THREE.BufferAttribute(...[...vertices, vertices[0]]), 2);
+    panelGeometry.setAttribute("position", new THREE.BufferAttribute(verticesPane, 3));
+    lineGeometry.setAttribute("position", new THREE.BufferAttribute(verticesLine, 3));
+    /* panelGeometry.vertices.push(...vertices);
+     lineGeometry.vertices.push(...[...vertices, vertices[0]]);*/
 
-    // panelGeometry.faces.push(new THREE.Face3(0, 1, 2));
-    // panelGeometry.computeFaceNormals();
+  /*  panelGeometry.faces.push(new THREE.Face3(0, 1, 2));
+    panelGeometry.computeFaceNormals();*/
 
     panelGeometry.computeVertexNormals();
 
