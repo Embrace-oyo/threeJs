@@ -15,7 +15,7 @@ threejs imgParticle.vue
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-let img, canvas, ctx, imgData, particles, size = 3, cw, ch, points, loaded;
+let img, canvas, ctx, imgData, particles, size = 1, cw, ch, points, loaded;
 let scene, group, camera, renderer, controls;
 export default {
   name: "imgParticle",
@@ -33,8 +33,10 @@ export default {
       img = new Image();
       img.src = imgUrl;
       img.onload = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        /*canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;  */
+        canvas.width = img.width;
+        canvas.height = img.height;
         ctx.drawImage(img, 0, 0, canvas.width, canvas.width);
         imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         this.getParticleData();
