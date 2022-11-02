@@ -300,7 +300,7 @@ export default {
     initTriangle() {
       // 创建三角形组合
       TriangleGroup = new THREE.Group();
-      // 每500毫秒创建一个三角形
+      // 每500毫秒创建一个render(三角形
       setInterval(this.addTriangle.bind(this), 500);
       // 场景加入三角形
       scene.add(TriangleGroup);
