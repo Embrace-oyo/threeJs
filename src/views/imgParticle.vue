@@ -6,7 +6,6 @@ threejs imgParticle.vue
 -->
 <template>
   <div id="imgParticle" class="imgParticle">
-
   </div>
 </template>
 
@@ -33,11 +32,11 @@ export default {
       img = new Image();
       img.src = imgUrl;
       img.onload = () => {
-        /*canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;  */
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.width);
+        canvas.width = window.innerWidth;
+        let canvasRate = img.width / img.height;
+        canvas.height = canvas.width / canvasRate;
+        console.log(canvasRate);
+        ctx.drawImage(img, 0, 0, canvas.width, (canvas.width / canvasRate));
         imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         this.getParticleData();
         this.initThree();
@@ -50,7 +49,9 @@ export default {
       }
       cw = Math.floor(canvas.width / size);
       ch = Math.floor(canvas.height / size);
-      particles = cw * ch;
+
+      // 计算图片总像素点
+      particles = canvas.width * canvas.height;
     },
     initThree() {
       scene = new THREE.Scene();
@@ -66,14 +67,18 @@ export default {
       let positions = new Float32Array(Math.floor(particles * 3));
       // let positions_af = new Float32Array(Math.floor(particles * 3));
       let colors = new Float32Array(Math.floor(particles * 3));
+      let s = 3;
+      // 坐标起始点
+      let pxStart = -canvas.width / 2;
+      let pyStart = canvas.height / 2;
       for (let i = 0; i < positions.length; i += 1) {
-        positions[3 * i] = -canvas.width / 2 + (i % cw) * size;
-        positions[3 * i + 1] = canvas.height / 2 + Math.floor((-1 - i) / cw) * size;
-        positions[3 * i + 2] = 0;
+        positions[s * i] = pxStart + (i % cw) * size;
+        positions[s * i + 1] = pyStart + Math.floor((-1 - i) / cw) * size;
+        positions[s * i + 2] = 0;
         let selectPos = size * (i % cw) + Math.floor(i / cw) * cw * size * size;
-        colors[3 * i] = imgData.data[4 * selectPos] / 255.0;
-        colors[3 * i + 1] = imgData.data[4 * selectPos + 1] / 255.0;
-        colors[3 * i + 2] = imgData.data[4 * selectPos + 2] / 255.0;
+        colors[s * i] = imgData.data[4 * selectPos] / 255.0;
+        colors[s * i + 1] = imgData.data[4 * selectPos + 1] / 255.0;
+        colors[s * i + 2] = imgData.data[4 * selectPos + 2] / 255.0;
       }
       geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
       geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
@@ -83,7 +88,6 @@ export default {
       points = new THREE.Points(geometry, material);
       points.name = "points";
       scene.add(points);
-      loaded = true;
     },
     animate() {
       controls.update();
